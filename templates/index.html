@@ -1,19 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>{{ title }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Fitness Coach</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        label {
+            font-weight: bold;
+        }
+    </style>
+</head>
 <body>
-    <div class="App">
-        <header class="App-header">
-            <img src="{{ url_for('static', filename='Octocat.png') }}" class="App-logo" alt="logo" />
-            <p>
-                GitHub Codespaces <span class="heart">♥️</span> Flask
-            </p>
-            <p class="small">
-                Edit <code>templates/index.html</code> and refresh to see your changes!
-            </p>
-        </header>
+    <div class="container">
+        <h1>AI Fitness Coach</h1>
+    <p2>Created By: Siddharth Damodharan, Roshan Balaji, Pranav Kilaru, Brooks Peterson, Greysen Bahl, Mckayla Khamphengphet</p2>
+        <form method="post">
+            <div class="form-group">
+                <label for="height">Height (in meters):</label>
+                <input type="text" class="form-control" id="height" name="height" required>
+            </div>
+            <div class="form-group">
+                <label for="weight">Weight (in kg):</label>
+                <input type="text" class="form-control" id="weight" name="weight" required>
+            </div>
+            <div class="form-group">
+                <label for="muscle_mass">Muscle Mass (in kg):</label>
+                <input type="text" class="form-control" id="muscle_mass" name="muscle_mass" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Get Fitness Plan</button>
+        </form>
     </div>
 </body>
-
 </html>
