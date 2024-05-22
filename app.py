@@ -1,21 +1,23 @@
 from flask import Flask, render_template, request
-from openai import OpenAI
+import openai
 
-client = OpenAI(api_key='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')
+openai.api_key = 'sk-proj-oaa5ZKq8WWOtqV1glSHtT3BlbkFJPgloVM3quccxED8KVj1f'
 
 app = Flask(__name__)
 
-# Set your OpenAI API key
-
-# Define a function to generate fitness plans using GPT-3
+# Define a function to generate fitness plans using the updated OpenAI API
 def generate_fitness_plan(height, weight, muscle_mass):
-    engine="text-davinci-003"
-    stream=True
+    model = "gpt-3.5-turbo"
     prompt = f"Generate a personalized fitness plan for a user with the following details:\nHeight: {height} meters\nWeight: {weight} kg\nMuscle Mass: {muscle_mass} kg"
-    response = client.completions.create(engine="text-davinci-003",
-    prompt=prompt,
-    max_tokens=150)
-    return response.choices[0].text.strip()
+    response = openai.ChatCompletion.create(
+        model=model,
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=150
+    )
+    return response['choices'][0]['message']['content'].strip()
 
 # Define route for the home page
 @app.route('/', methods=['GET', 'POST'])
@@ -32,4 +34,3 @@ def index():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
