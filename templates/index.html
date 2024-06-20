@@ -25,13 +25,22 @@
         label {
             font-weight: bold;
         }
+        #loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        #loading img {
+            width: 50px;
+            height: 50px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>AI Fitness Coach</h1>
-    <p2>Created By: Siddharth Damodharan, Roshan Balaji, Pranav Kilaru, Brooks Peterson, Greysen Bahl</p2>
-        <form method="post">
+        <p2>Created By: Siddharth Damodharan, Roshan Balaji, Pranav Kilaru, Brooks Peterson, Greysen Bahl</p2>
+        <form id="fitnessForm" method="post">
             <div class="form-group">
                 <label for="height">Height (in meters):</label>
                 <input type="text" class="form-control" id="height" name="height" required>
@@ -41,15 +50,21 @@
                 <input type="text" class="form-control" id="weight" name="weight" required>
             </div>
             <div class="form-group">
-                <label for="muscle_mass">Description of Fitness Goals</label>
+                <label for="muscle_mass">Description of Fitness Goals:</label>
                 <input type="text" class="form-control" id="muscle_mass" name="muscle_mass" required>
             </div>
-<!--<div class="form-group">
-                <label for="sport">Please describe the sport you play and or your fitness expeirence</label>
-               <input type="text" class="form-control" id="sport" name="sport" required>
-            </div>-->
             <button type="submit" class="btn btn-primary">Get Fitness Plan</button>
         </form>
+        <div id="loading">
+            <p>Generating your fitness plan...</p>
+            <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading spinner">
+        </div>
     </div>
+
+    <script>
+        document.getElementById('fitnessForm').addEventListener('submit', function() {
+            document.getElementById('loading').style.display = 'block';
+        });
+    </script>
 </body>
 </html>

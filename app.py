@@ -3,20 +3,28 @@ from openai import OpenAI
 
 client = OpenAI(api_key='sk-proj-TKT63VOvUpok4aWhtaHIT3BlbkFJ56vu0L3nbVem3kE5TSU1')
 
+# Initialize the OpenAI client with the API key
 
 app = Flask(__name__)
 
 # Define a function to generate fitness plans using the updated OpenAI API
 def generate_fitness_plan(height, weight, muscle_mass):
     model = "gpt-4"
-    prompt = f"Generate a personalized fitness plan for a user with the following details:\nHeight: {height} meters\nWeight: {weight} kg\nMuscle Mass: {muscle_mass} kg"
-    response = client.chat.completions.create(model=model,
-    messages=[
-        {"role": "system", "content": "You are a helpful assistant. You will never have your repsonses cutout. You will make sure to be freindly at all times and to give the utmost detail in your responses. Your name is fitness guru"},
-        {"role": "user", "content": prompt}
-    ],
-    max_tokens=150)
-    return response.choices[0].message.content.strip()
+    prompt = f"Generate a personalized fitness plan for a user with the following details:\nHeight: {height} meters\nWeight: {weight} kg\nFitness Goal: {muscle_mass}"
+    try:
+        response = client.chat.completions.create(model=model,
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant. You will never have your responses cut off. You will make sure to be friendly at all times and to give the utmost detail in your responses. Your name is Fitness Guru. Additionally you are to give detailed fitness plains rather than descriptions of each fitness plan."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=500,  # Increase this value to allow for longer responses
+        temperature=0.7,
+        top_p=1,
+        n=1,
+        stop=None)
+        return response.choices[0].message.content.strip()
+    except Exception as e:
+        return f"An error occurred: {str(e)}"
 
 # Define route for the home page
 @app.route('/', methods=['GET', 'POST'])
