@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Fitness Coach</title>
+    <title>Sign Up - AI Fitness Coach</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script type="module" src="{{ url_for('static', filename='js/firebase.js') }}"></script>
     <style>
         body {
             background-color: #f8f9fa;
@@ -44,53 +45,54 @@
             background-color: #0056b3;
             border-color: #0056b3;
         }
-        #loading {
-            display: none;
+        #error-message {
             text-align: center;
-            margin-top: 20px;
+            font-size: 1rem;
         }
-        #loading img {
-            width: 50px;
-            height: 50px;
+        p {
+            text-align: center;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #0056b3;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <img src="static/Pringles.png" alt="Logo" class="logo">
-        <h1>Fitness Guru</h1>
-        <form id="fitnessForm" method="post">
+        <h1>Sign Up</h1>
+        <form id="signupForm">
             <div class="form-group">
-                <label for="height">Height (in feet) enter decimals for inches:</label>
-                <input type="text" class="form-control" id="height" name="height" required>
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" required>
             </div>
             <div class="form-group">
-                <label for="weight">Weight (in lb):</label>
-                <input type="text" class="form-control" id="weight" name="weight" required>
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" id="password" required>
             </div>
-            <div class="form-group">
-                <label for="muscle_mass">Description of Fitness Goals:</label>
-                <input type="text" class="form-control" id="muscle_mass" name="muscle_mass" required>
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">Get Fitness Plan</button>
+            <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
         </form>
-        <div id="loading">
-            <p>Generating your fitness plan...</p>
-            <img src="/static/Pronav.gif" alt="Loading spinner">
-        </div>
+        <div id="error-message" class="text-danger mt-3"></div>
+        <p class="mt-3">Already have an account? <a href="/login">Login</a></p>
     </div>
-
     <script type="module">
-        import { auth } from './static/js/firebase.js';
+        import { auth, createUserWithEmailAndPassword } from './static/js/firebase.js';
 
-        auth.onAuthStateChanged((user) => {
-            if (!user) {
-                window.location.href = '/login';
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                await createUserWithEmailAndPassword(auth, email, password);
+                window.location.href = '/';
+            } catch (error) {
+                document.getElementById('error-message').innerText = error.message;
             }
-        });
-
-        document.getElementById('fitnessForm').addEventListener('submit', function() {
-            document.getElementById('loading').style.display = 'block';
         });
     </script>
 </body>

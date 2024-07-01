@@ -11,19 +11,50 @@
             font-family: Arial, sans-serif;
         }
         .container {
-            max-width: 600px;
+            max-width: 800px;
             margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
         h1 {
             text-align: center;
             margin-bottom: 30px;
+            color: #343a40;
         }
-        .fitness-plan {
-            white-space: pre-wrap;
+        .fitness-plan, .fitness-score, .ask-section {
+            padding: 20px;
+            background-color: #e9ecef;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+        .fitness-plan h2, .fitness-score h2, .ask-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #343a40;
+        }
+        .fitness-plan p, .fitness-score p, .ask-section p {
+            font-size: 1.2rem;
+            color: #343a40;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        #ask-loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        #ask-loading img {
+            width: 50px;
+            height: 50px;
         }
     </style>
 </head>
@@ -31,8 +62,64 @@
     <div class="container">
         <h1>Your Fitness Plan</h1>
         <div class="fitness-plan">
-            {{ fitness_plan }}
+            <h2>Fitness Plan</h2>
+            <p>{{ fitness_plan }}</p>
+        </div>
+        
+        <div class="fitness-score">
+            <h2>Fitness Score</h2>
+            <p>Your Fitness Score: {{ fitness_score }}</p>
+        </div>
+
+        <div class="ask-section">
+            <h2>Ask a Question</h2>
+            <textarea id="question" class="form-control" rows="3" placeholder="Enter your question here..."></textarea>
+            <button id="ask-button" class="btn btn-primary mt-3">Ask</button>
+            <div id="ask-loading">
+                <p>Generating response...</p>
+                <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading spinner">
+            </div>
+            <div id="ask-response" class="mt-3"></div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('ask-button').addEventListener('click', async () => {
+            const askButton = document.getElementById('ask-button');
+            const question = document.getElementById('question').value;
+            const loading = document.getElementById('ask-loading');
+            const responseDiv = document.getElementById('ask-response');
+
+            if (!question.trim()) {
+                alert('Please enter a question.');
+                return;
+            }
+
+            askButton.disabled = true;
+            loading.style.display = 'block';
+
+            try {
+                const response = await fetch('/ask', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ question }),
+                });
+
+                const data = await response.json();
+                if (data.answer) {
+                    responseDiv.innerHTML = `<p>${data.answer}</p>`;
+                } else if (data.error) {
+                    responseDiv.innerHTML = `<p>Error: ${data.error}</p>`;
+                }
+            } catch (error) {
+                responseDiv.innerHTML = `<p>Error: ${error.message}</p>`;
+            } finally {
+                askButton.disabled = false;
+                loading.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
