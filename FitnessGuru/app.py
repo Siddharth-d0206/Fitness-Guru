@@ -5,7 +5,7 @@ import pyrebase
 # Firebase configuration
 firebase_config = {
     # enter creds here
-}
+}   
 
 # Initialize Firebase
 firebase = pyrebase.initialize_app(firebase_config)
