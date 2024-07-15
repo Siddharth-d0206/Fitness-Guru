@@ -4,12 +4,7 @@ import pyrebase
 
 # Firebase configuration
 firebase_config = {
-    "apiKey": "AIzaSyCSs8RlFLTXofnvUcYYgoTFulJtGppWiBI",
-    "authDomain": "fitnessai-5ffc4.firebaseapp.com",
-    "databaseURL": "https://fitnessai-5ffc4-default-rtdb.firebaseio.com/",
-    "storageBucket": "fitnessai-5ffc4.appspot.com",
-    "messagingSenderId": "175181615870",
-    "appId": "1:175181615870:web:09ab675705e2b175c8cbaf"
+    # enter Firebase credentials
 }
 
 # Initialize Firebase
@@ -17,7 +12,8 @@ firebase = pyrebase.initialize_app(firebase_config)
 auth = firebase.auth()
 db = firebase.database()
 
-client = OpenAI(api_key='sk-proj-TKT63VOvUpok4aWhtaHIT3BlbkFJ56vu0L3nbVem3kE5TSU1')
+#enter api key here
+client = OpenAI(api_key='#')
 
 app = Flask(__name__)
 
@@ -32,7 +28,7 @@ def generate_fitness_plan(height, weight, muscle_mass):
                 {"role": "user", "content": prompt}
             ],
             max_tokens=5000,
-            temperature=0.7,
+            temperature=0.5,
             top_p=1,
             n=1,
             stop=None
